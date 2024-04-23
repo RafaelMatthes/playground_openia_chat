@@ -6,3 +6,4 @@ from .chat_history import MessageHistory
 class ChatPayload:
     chat_history: list[MessageHistory]
     question: str
+    stream: bool = True
