@@ -2,12 +2,11 @@ from fastapi import APIRouter, Body, HTTPException
 from models.chat_payload import ChatPayload
 from openai.types import ImagesResponse
 
-from llm.llm_chat import (
+from llm.llm_image_creator import (
     LlmImagesCreator, 
     ImageCreatorNotFoundError, 
     ImageCreatorPolicyError
 )
-
 
 dall_e = APIRouter()
 
@@ -18,7 +17,7 @@ async def chat_whit_history(chat_payload: ChatPayload = Body(...)) -> ImagesResp
         return LlmImagesCreator(
                 credentials=chat_payload.credentials
             ).create_image( 
-                history=chat_payload.chat_history,
+                chat_history=chat_payload.chat_history,
                 question=chat_payload.question
             )
 
