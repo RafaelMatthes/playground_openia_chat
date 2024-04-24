@@ -1,6 +1,6 @@
 from unittest.mock import patch
 from fastapi.testclient import TestClient
-from llm.llm_chat import Llm_chat
+from llm.llm_chat import LlmChat
 from models.chat_history import MessageHistory
 from routes.chat_route import chat
 
@@ -39,7 +39,7 @@ def test_llm_cha_invoke():
     with patch('langchain_openai.AzureChatOpenAI.invoke') as mock_azure_chat:
         mock_azure_chat.return_value = "Mocked response"
 
-        llm_chat = Llm_chat()
+        llm_chat = LlmChat()
 
         history = [
             MessageHistory(**{
@@ -60,11 +60,11 @@ def test_llm_cha_invoke():
         assert response == "Mocked response"
 
 
-def test_llm_chat_stream():
+def test_LlmChat_stream():
     with patch('langchain_openai.AzureChatOpenAI.stream') as mock_azure_chat:
         mock_azure_chat.return_value = "Mocked response"
 
-        llm_chat = Llm_chat()
+        llm_chat = LlmChat()
 
         history = [
             MessageHistory(**{
