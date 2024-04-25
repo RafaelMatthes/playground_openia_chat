@@ -24,7 +24,7 @@ class MockImagesResponse:
 
 
 @patch('llm.llm_image_creator.LlmImagesCreator.create_image')
-def test_create_images_endpoint(mock_dall_e, client, mock_env_variables):
+def test_create_images_endpoint(mock_dall_e, client):
 
     mock_dall_e.return_value = MockImagesResponse(created=123, data=[], content="{'img': '123'}")
 
