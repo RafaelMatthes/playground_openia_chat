@@ -1,6 +1,6 @@
 from langchain_openai import AzureChatOpenAI
 from .llm_helper import LlmHelper
-
+from models.chat_history import MessageHistory
 
 
 class LlmChat(LlmHelper):
@@ -14,12 +14,13 @@ class LlmChat(LlmHelper):
             streaming=True
         )
 
-    def chat_invoke(self, history: list[dict], question: str):
-        prompt = self._build_prompt_template(question, history)
+    def chat_invoke(self, chat_history: list[MessageHistory], question: str):
+
+        prompt = self._build_prompt_template(question, chat_history)
         return self.llm.invoke(prompt)
 
-    async def chat_stream(self, history: list[dict], question: str) -> str:
+    async def chat_stream(self, chat_history: list[MessageHistory], question: str) -> str:
 
-        prompt = self._build_prompt_template(question, history)
+        prompt = self._build_prompt_template(question, chat_history)
         for chunk in self.llm.stream(prompt):
             yield chunk.content
