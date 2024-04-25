@@ -22,7 +22,7 @@ class LlmImagesCreator(LlmHelper):
                 api_key=self._credentials.api_key,
             )
 
-    def create_image(self, chat_history: list[dict], question: str) -> ImagesResponse:
+    def create_image(self, question: str) -> ImagesResponse:
 
         try:
             # llm = self._get_llm()
