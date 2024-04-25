@@ -23,15 +23,6 @@ Este é um projeto de assistente de chat desenvolvido com FastAPI, utilizando um
     pip install -r requirements.txt
     ```
 
-3. Configure as variáveis de ambiente:
-
-    Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis:
-
-    ```
-    AZURE_API_KEY=SuaChaveDeAPIDaAzure
-    AZURE_API_ENDPOINT=URLDoEndpointDaAzure
-    ```
-
 ## Uso
 
 1. Inicie o servidor:
@@ -55,7 +46,3 @@ pytest
 ```
 /docs
 ```
-
-## Licença
-
-Este projeto está licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
