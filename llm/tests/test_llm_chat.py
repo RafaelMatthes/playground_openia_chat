@@ -6,6 +6,7 @@ from models.llm_credentials import LlmCredentials
 from routes.chat_route import chat
 from dataclasses import dataclass
 
+
 @dataclass
 class MockIAMessage:
     content: str
