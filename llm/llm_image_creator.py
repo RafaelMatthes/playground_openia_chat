@@ -71,8 +71,8 @@ class LlmCreativeImageCreator(LlmImagesCreator):
             # existem 2 serviços ativos, cada um deles faz apenas uma tarefa
             # ideial seria ter 1 serviço com as duas funcionalidades ativadas.
             fix_me_credendtials = LlmCredentials(**{
-                    "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT"),
-                    "api_key": os.getenv("AZURE_OPENAI_API_KEY")
+                    "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+                    "api_key": os.getenv("AZURE_OPENAI_API_KEY", "")
                 })
 
             chain_chat = LlmChat(
