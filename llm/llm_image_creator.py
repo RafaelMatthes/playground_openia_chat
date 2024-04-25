@@ -41,12 +41,13 @@ class LlmImagesCreator(LlmHelper):
                 prompt=question,
                 size="1024x1024",
                 n=1,
-                quality="hd",
+                quality="sd",
                 style="vivid"
             )
 
         except NotFoundError as err:
             raise ImageCreatorNotFoundError(str(err))
+        
         except BadRequestError as err:
             raise ImageCreatorPolicyError(err)
 
@@ -90,7 +91,7 @@ class LlmCreativeImageCreator(LlmImagesCreator):
         except BadRequestError as err:
             raise ImageCreatorPolicyError(err)
 
-    def creative_chat(self, chat_history: List[MessageHistory], question: str):
+    def creative_chat(self, chat_history: List[MessageHistory], question: str) -> ImagesResponse:
 
         return self.create_image(
             question=self._create_creative_prompt(chat_history, question)
