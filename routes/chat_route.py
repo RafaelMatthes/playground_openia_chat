@@ -15,7 +15,7 @@ async def chat_whit_history(chat_payload: ChatPayload = Body(...)):
         if chat_payload.stream:
             async def stream_response(payload):
                 async for chunk in LlmChat(credentials=chat_payload.credentials).chat_stream(
-                    history=payload.chat_history,
+                    chat_history=payload.chat_history,
                     question=payload.question
                 ):
                     yield chunk
@@ -30,7 +30,7 @@ async def chat_whit_history(chat_payload: ChatPayload = Body(...)):
                 )
 
         return LlmChat(credentials=chat_payload.credentials).chat_invoke(
-                history=chat_payload.chat_history,
+                chat_history=chat_payload.chat_history,
                 question=chat_payload.question
             )
     except Exception as err:

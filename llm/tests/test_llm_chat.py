@@ -25,10 +25,6 @@ def test_chat_whit_history_stream_off(mock_invoke):
     payload = {
         "chat_history": [
             {
-                "role": "system",
-                "content": "You are an AI assistant that helps people find information and answer formatted in markdown."
-            },
-            {
                 "role": "user",
                 "content": "Olá meu nome é rafael"
             },
@@ -63,10 +59,6 @@ def test_chat_whit_history_stream(mock_stream):
     payload = {
         "chat_history": [
             {
-                "role": "system",
-                "content": "You are an AI assistant that helps people find information and answer formatted in markdown."
-            },
-            {
                 "role": "user",
                 "content": "Olá meu nome é rafael"
             },
@@ -94,10 +86,6 @@ def test_llm_cha_invoke():
         llm_chat = LlmChat(credentials=MOCK_CREDENTIALS)
 
         history = [
-            MessageHistory(**{
-                "role": "system",
-                "content": "You are an AI assistant that helps people find information and answer formatted in markdown."
-            }),
             MessageHistory(**{
                 "role": "user",
                 "content": "Olá meu nome é Rafael"
