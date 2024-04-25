@@ -2,6 +2,7 @@ from langchain_openai import AzureChatOpenAI
 from .llm_helper import LlmHelper
 
 
+
 class LlmChat(LlmHelper):
 
     def _get_llm(self):
@@ -17,7 +18,7 @@ class LlmChat(LlmHelper):
         prompt = self._build_prompt_template(question, history)
         return self.llm.invoke(prompt)
 
-    async def chat_stream(self, history: list[dict], question: str):
+    async def chat_stream(self, history: list[dict], question: str) -> str:
 
         prompt = self._build_prompt_template(question, history)
         for chunk in self.llm.stream(prompt):
