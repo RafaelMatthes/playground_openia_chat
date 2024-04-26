@@ -75,15 +75,15 @@ class LlmCreativeImageCreator(LlmImagesCreator):
             # FIXME: deverá ser fornecido via endpoint, porém no momento
             # existem 2 serviços ativos, cada um deles faz apenas uma tarefa
             # ideial seria ter 1 serviço com as duas funcionalidades ativadas.
-            fix_me_credendtials = LlmCredentials(**{
-                    "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
-                    "api_key": os.getenv("AZURE_OPENAI_API_KEY", "")
-                })
+            # fix_me_credendtials = LlmCredentials(**{
+            #         "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+            #         "api_key": os.getenv("AZURE_OPENAI_API_KEY", "")
+            #     })
 
-            chain_chat = LlmChat(
-                fix_me_credendtials
             # chain_chat = LlmChat(
-            #     self._credentials
+            #     fix_me_credendtials
+            chain_chat = LlmChat(
+                self._credentials
             ).chat_invoke(
                 chat_history=chat_history,
                 question=question
