@@ -24,6 +24,10 @@ class ImageCreatorPolicyError(Exception):
     pass
 
 
+class ImageDescriptionError(Exception):
+    pass
+
+
 class LlmImagesCreator(LlmHelper):
 
     def _get_llm(self):
@@ -35,13 +39,15 @@ class LlmImagesCreator(LlmHelper):
 
     def create_image(self, question: str) -> ImagesResponse:
 
+        print(question)
+
         try:
             return self.llm.images.generate(
                 model="Dalle3",
                 prompt=question,
                 size="1024x1024",
                 n=1,
-                quality="sd",
+                quality="standard",
                 style="vivid"
             )
 
@@ -54,13 +60,12 @@ class LlmImagesCreator(LlmHelper):
 
 class LlmCreativeImageCreator(LlmImagesCreator):
 
-    TEMPLATE = """Você é uma IA que ajuda pessoas criando imagens, 
-                quando o humano lhe fizer uma pergunta, vc deve descrever em detalhes uma imagem 
-                que irá respoder a pergunta, podendo usar como base a descrição de imagens 
-                anteriores desde que seja totalmente descrita novamente, a sua resposta deverá ser 
-                estruturada em um dicionário {'img': '' , 'mensagem': ''} - campo 'img' para descrição
-                da imagem e 'mensagem' para qualquer mensagem que não faça parte da descrição de imagem
-                """
+    TEMPLATE = """Você é uma IA que ajuda pessoas criando imagens, quando o humano lhe fizer uma pergunta, 
+    vc deve descrever em detalhes uma imagem que irá responder a pergunta, dê preferência a descrição de 
+    imagens anteriores caso exista, desde que seja totalmente descrita novamente. A sua resposta deverá 
+    ser estruturada somente em um dicionário {"img": " ", "mensagem": " "}, onde o campo "img" é utilizado 
+    para a descrição da imagem e "mensagem" para qualquer mensagem que não faça parte da descrição de imagem. 
+    Não utilize aspas no seu texto."""
 
     def _create_creative_prompt(self, chat_history: List[MessageHistory], question: str) -> str:
         try:
@@ -70,28 +75,34 @@ class LlmCreativeImageCreator(LlmImagesCreator):
             # FIXME: deverá ser fornecido via endpoint, porém no momento
             # existem 2 serviços ativos, cada um deles faz apenas uma tarefa
             # ideial seria ter 1 serviço com as duas funcionalidades ativadas.
-            # fix_me_credendtials = LlmCredentials(**{
-            #         "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
-            #         "api_key": os.getenv("AZURE_OPENAI_API_KEY", "")
-            #     })
+            fix_me_credendtials = LlmCredentials(**{
+                    "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+                    "api_key": os.getenv("AZURE_OPENAI_API_KEY", "")
+                })
 
-            # chain_chat = LlmChat(
-            #     fix_me_credendtials
             chain_chat = LlmChat(
-                self._credentials
+                fix_me_credendtials
+            # chain_chat = LlmChat(
+            #     self._credentials
             ).chat_invoke(
                 chat_history=chat_history,
                 question=question
             )
-            chain_response = json.loads(chain_chat.content.replace("'", "\""))
-
-            return chain_response['img']
-
+            
+            try:
+                chain_response = json.loads(chain_chat.content.replace("'", "\""))
+                return chain_response['img']
+            except ValueError:
+                return chain_chat.content
+            
         except NotFoundError as err:
             raise ImageCreatorNotFoundError(str(err))
 
         except BadRequestError as err:
             raise ImageCreatorPolicyError(err)
+        
+        except Exception as err:
+            raise ImageDescriptionError(f"erro ao converter resposta em dict: {err}")
 
     def creative_chat(self, chat_history: List[MessageHistory], question: str) -> ImagesResponse:
 

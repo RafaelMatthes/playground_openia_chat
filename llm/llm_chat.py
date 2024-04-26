@@ -5,6 +5,10 @@ from models.chat_history import MessageHistory
 
 class LlmChat(LlmHelper):
 
+    PROMPT_TEMPLATE = {
+        "role": "system", "content": "You are an AI assistant that helps people find information and answer formatted in markdown."
+    }
+
     def _get_llm(self):
         return AzureChatOpenAI(
             openai_api_key=self._credentials.api_key,
@@ -20,6 +24,8 @@ class LlmChat(LlmHelper):
         return self.llm.invoke(prompt)
 
     async def chat_stream(self, chat_history: list[MessageHistory], question: str) -> str:
+
+        chat_history.insert(0, MessageHistory(**self.PROMPT_TEMPLATE))
 
         prompt = self._build_prompt_template(question, chat_history)
         for chunk in self.llm.stream(prompt):

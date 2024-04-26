@@ -6,7 +6,8 @@ from llm.llm_image_creator import (
     LlmImagesCreator, 
     LlmCreativeImageCreator,
     ImageCreatorNotFoundError, 
-    ImageCreatorPolicyError
+    ImageCreatorPolicyError,
+    ImageDescriptionError
 )
 
 dall_e = APIRouter()
@@ -25,6 +26,8 @@ async def create_images(chat_payload: ChatImagePayload = Body(...)) -> ImagesRes
         raise HTTPException(status_code=404, detail=str(err))
     except ImageCreatorPolicyError as err:
         raise HTTPException(status_code=400, detail=str(err))
+    except ImageDescriptionError as err:
+        raise HTTPException(status_code=500, detail=str(err))
 
 
 @dall_e.post('/creative_chat', status_code=200)
@@ -41,3 +44,5 @@ async def creative_chat(chat_payload: ChatCreativePayload = Body(...)) -> Images
         raise HTTPException(status_code=404, detail=str(err))
     except ImageCreatorPolicyError as err:
         raise HTTPException(status_code=400, detail=str(err))
+    except ImageDescriptionError as err:
+        raise HTTPException(status_code=500, detail=str(err))
