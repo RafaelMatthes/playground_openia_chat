@@ -46,3 +46,10 @@ pytest
 ```
 /docs
 ```
+
+## TO-DO:
+- Add DockerFile and docker-compose
+- Add Vectorial database endpoints (POST/DELETE)
+- Add Retrieval Augmented Generation endpoint (RAG)
+  
+
