@@ -15,4 +15,3 @@ class ChatCreativePayload:
     question: str
     credentials: LlmCredentials
     chat_history: List[MessageHistory]
-    question: str
