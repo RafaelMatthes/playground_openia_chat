@@ -11,7 +11,6 @@ from .llm_helper import LlmHelper
 from .llm_chat import LlmChat
 
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
